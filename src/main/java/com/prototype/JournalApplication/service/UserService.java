@@ -6,16 +6,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.core.userdetails.UserDetails;
 //import org.springframework.security.core.userdetails.UserDetailsService;
 //import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     @Autowired
     private UserRepo userRepo;
+
+    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     public UserService(UserRepo userRepo) {
         this.userRepo = userRepo;
@@ -23,6 +29,7 @@ public class UserService {
 
 
     public void createUser(User user) {
+        user.setPassword(encoder.encode(user.getPassword()));
         userRepo.save(user);
     }
 
@@ -49,14 +56,14 @@ public class UserService {
 
     }
 
-//    @Override
-//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//        User user = userRepo.findByUsername(username);
-//        if(user== null){
-//            System.out.println("No User Found");
-//            throw new UsernameNotFoundException("No user found");
-//        }
-//
-//        return new UserServiceImpl(user);
-//    }
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepo.findByUserName(username);
+        if(user== null){
+            System.out.println("No User Found");
+            throw new UsernameNotFoundException("No user found");
+        }
+
+        return new UserServiceImpl(user);
+    }
 }
