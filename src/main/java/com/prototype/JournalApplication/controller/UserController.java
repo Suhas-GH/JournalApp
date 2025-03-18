@@ -32,4 +32,9 @@ public class UserController {
         userService.updateUser(id,user);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
+
+    @PostMapping("/login")
+    public String login(@RequestBody User user){
+        return userService.verify(user);
+    }
 }
