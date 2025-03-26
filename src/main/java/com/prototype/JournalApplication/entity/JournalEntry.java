@@ -1,16 +1,13 @@
 package com.prototype.JournalApplication.entity;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+]
 import lombok.NonNull;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
-@Data
 @Document(collection = "journal _entries")
-@NoArgsConstructor
 public class JournalEntry {
     @Id
     private long id;
@@ -23,4 +20,39 @@ public class JournalEntry {
 
     private LocalDateTime date;
 
+    public JournalEntry() {
+
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public LocalDateTime getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDateTime date) {
+        this.date = date;
+    }
 }
